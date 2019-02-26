@@ -11,6 +11,10 @@ ModelImporter:
     100010: Pad
     100012: Palank
     100014: //RootNode
+    100016: bordasfal.001
+    100018: bordasfal.002
+    100020: mikasaTarto
+    100022: Pad.001
     400000: bordasfal
     400002: bordasfal2
     400004: Fal1
@@ -19,6 +23,10 @@ ModelImporter:
     400010: Pad
     400012: Palank
     400014: //RootNode
+    400016: bordasfal.001
+    400018: bordasfal.002
+    400020: mikasaTarto
+    400022: Pad.001
     2100000: No Name
     2300000: bordasfal
     2300002: bordasfal2
@@ -27,6 +35,10 @@ ModelImporter:
     2300008: Fold
     2300010: Pad
     2300012: Palank
+    2300014: bordasfal.001
+    2300016: bordasfal.002
+    2300018: mikasaTarto
+    2300020: Pad.001
     3300000: bordasfal
     3300002: bordasfal2
     3300004: Fal1
@@ -34,6 +46,10 @@ ModelImporter:
     3300008: Fold
     3300010: Pad
     3300012: Palank
+    3300014: bordasfal.001
+    3300016: bordasfal.002
+    3300018: mikasaTarto
+    3300020: Pad.001
     4300000: Pad
     4300002: Palank
     4300004: bordasfal2
@@ -41,6 +57,10 @@ ModelImporter:
     4300008: Fal2
     4300010: Fal1
     4300012: Fold
+    4300014: mikasaTarto
+    4300016: bordasfal.002
+    4300018: Pad.001
+    4300020: bordasfal.001
   externalObjects: {}
   materials:
     importMaterials: 1
