@@ -18,8 +18,15 @@ public class IngamePanel : MonoBehaviour
 		}
 	}
 
+	[System.Serializable]
+	public struct AccuracyParticle {
+		public Accuracy accuracy;
+		public ParticleSystem particle;
+	}
+
 	public Image tapIndicator;
 	public Image targetTapIndicator;
+	public AccuracyParticle[] accuracyParticles;
 
 	private Material tapMat;
 	private Material targetMat;
@@ -28,6 +35,7 @@ public class IngamePanel : MonoBehaviour
 	public void Awake() {
 		GameController.Instance.RefreshTapIndicator += RefreshTapIndicator;
 		GameController.Instance.RefreshTarget += RefreshTargetIndicator;
+		GameController.Instance.HitTheBall += PlayAccuracyParticle;
 		tapMat = tapIndicator.material = Instantiate(tapIndicator.material);
 		targetMat = targetTapIndicator.material = Instantiate(targetTapIndicator.material);
 		mainCanvasRectTransform = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
@@ -47,5 +55,17 @@ public class IngamePanel : MonoBehaviour
 		Vector3 screenPositionNormalized = new Vector3(displaySettings.screenPosition.x / Camera.main.pixelWidth, displaySettings.screenPosition.y / Camera.main.pixelHeight, 0f);
 		Vector3 guiPosition = new Vector3(screenPositionNormalized.x * mainCanvasRectTransform.rect.width, screenPositionNormalized.y * mainCanvasRectTransform.rect.height, 0f);
 		indicatorImage.rectTransform.anchoredPosition = guiPosition;
+	}
+
+	private ParticleSystem GetAccuracyParticle(Accuracy accuracy) {
+		foreach (var aP in accuracyParticles) {
+			if (aP.accuracy == accuracy)
+				return aP.particle;
+		}
+		return null;
+	}
+
+	private void PlayAccuracyParticle(Accuracy accuracy) {
+		GetAccuracyParticle(accuracy).Play();
 	}
 }

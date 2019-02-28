@@ -10,6 +10,13 @@ public struct TargetConfig {
 	public Color circleColor;
 }
 
+public enum Accuracy {
+	Perfect,
+	Good,
+	Close,
+	Awful
+}
+
 public class ConfigDatabase : MonoBehaviour
 {
 	private static ConfigDatabase instance = null;
@@ -39,6 +46,17 @@ public class ConfigDatabase : MonoBehaviour
 				return tC;
 		}
 		return new TargetConfig();
+	}
+
+	public Accuracy GetAccuracy(float accuracyValue) {
+		if (accuracyValue < 0.1f)
+			return Accuracy.Perfect;
+		if (accuracyValue < 0.15f)
+			return Accuracy.Good;
+		if (accuracyValue < 0.25f) {
+			return Accuracy.Close;
+		}
+		return Accuracy.Awful;
 	}
 
 }
