@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
 	private void Awake() {
+		Application.targetFrameRate = 300;
 		InputController.Instance.TapHappened += TapHappened;
 	}
 
