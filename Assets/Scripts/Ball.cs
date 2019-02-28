@@ -35,7 +35,7 @@ public class Ball : MonoBehaviour
 
 	private Vector3 torqueVelocity = Vector3.zero;
 
-	private void Start() {
+	private void Awake() {
 		Initilaize();
 	}
 
@@ -52,11 +52,6 @@ public class Ball : MonoBehaviour
 
 	public void Initilaize() {
 		defaultStartingPosition = transform.position;
-		InputController.Instance.TapHappened += TapHappened;
-	}
-
-	private void TapHappened(int fingerIndex, Vector3 pixelPos) {
-		TestMovement();
 	}
 
 	private void TestMovement() {
