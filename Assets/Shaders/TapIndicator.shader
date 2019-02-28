@@ -58,11 +58,12 @@
 				color.a *= circle;
 				float outline = dst / ((_CircleSize * 0.5) - _OutlineWidth);
 				outline = saturate((1 - outline) / fwidth(dst * 5));
-				color.a += saturate(color.a * (1-outline));
+				color.a += saturate(color.a * (1-outline) * 2);
 				color.a = saturate(color.a);
-				float gradient = sin(radians(frac((i.uv.y * 0.75) + _Time.x * 5) * 360));
+				float gradient = sin(radians(frac((i.uv.y * 4) + _Time.x * 5) * 360));
 				color.rgb = lerp(saturate(_OutlineColor.rgb - pow(gradient * 0.5,2)),color.rgb,outline);
 				color.a *= 1 - saturate(pow(_CircleSize,3));
+				color.a *= 1  - (pow(_CircleSize,3) * (outline));
                 return color;
             }
             ENDCG
