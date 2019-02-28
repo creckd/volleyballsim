@@ -376,7 +376,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   torqueDrag: 1
-  collisionTorqueMultiplier: 60
+  collisionTorqueMultiplier: 50
   reboundHeightMultiplier: 1.25
   reboundCurve:
     serializedVersion: 2
