@@ -14,27 +14,27 @@ public class InputController : MonoBehaviour {
 		}
 	}
 
-	public Action<int> TapHappened = delegate { };
-	public Action<int> ReleaseHappened = delegate { };
+	public Action<int,Vector3> TapHappened = delegate { };
+	public Action<int,Vector3> ReleaseHappened = delegate { };
 
 	private void Update() {
 		// PC
 #if UNITY_EDITOR
 		if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space)) {
-			TapHappened(0);
+			TapHappened(0,Input.mousePosition);
 		}
 		if (Input.GetMouseButtonUp(0) || Input.GetKeyUp(KeyCode.Space)) {
-			ReleaseHappened(0);
+			ReleaseHappened(0,Input.mousePosition);
 		}
 #endif
 #if UNITY_ANDROID && !UNITY_EDITOR
 				Touch[] touches = Input.touches;
 		foreach (var touch in touches) {
 			if (touch.phase == TouchPhase.Began) {
-				TapHappened(touch.fingerId);
+				TapHappened(touch.fingerId,touch.position);
 			}
 			if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) {
-				ReleaseHappened(touch.fingerId);
+				ReleaseHappened(touch.fingerId,touch.position);
 			}
 		}
 #endif

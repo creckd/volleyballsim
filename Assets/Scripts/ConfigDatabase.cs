@@ -19,4 +19,7 @@ public class ConfigDatabase : MonoBehaviour
 	public float collisionTorqueMultiplier = 50f;
 	public float reboundHeightMultiplier = 10f;
 	public AnimationCurve reboundCurve;
+
+	[Header("Indicator")]
+	public float indicatorShrinkingSpeed = 1f;
 }

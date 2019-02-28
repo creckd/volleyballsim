@@ -55,7 +55,7 @@ public class Ball : MonoBehaviour
 		InputController.Instance.TapHappened += TapHappened;
 	}
 
-	private void TapHappened(int fingerIndex) {
+	private void TapHappened(int fingerIndex, Vector3 pixelPos) {
 		TestMovement();
 	}
 

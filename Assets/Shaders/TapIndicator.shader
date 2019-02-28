@@ -53,9 +53,12 @@
             {
 				half4 color = _InnerColor;
 				float dst = sqrt(pow(i.uv.x - 0.5,2) + pow(i.uv.y - 0.5,2));
-				color.a *= step(dst,0.5 * _CircleSize);
-				int outline = step(dst,(0.5 * _CircleSize) - _OutlineWidth);
-				color.a += (1-outline) *100 * color.a;
+				float circle = saturate((dst / (0.5 * _CircleSize)));
+				circle = saturate((1-circle) / fwidth(dst * 10));
+				color.a *= circle;
+				float outline = dst / ((_CircleSize * 0.5) - _OutlineWidth);
+				outline = saturate((1 - outline) / fwidth(dst * 10));
+				color.a += saturate(color.a * (1-outline));
 				color.a = saturate(color.a);
 				float gradient = sin(radians(frac((i.uv.y * 0.75) + _Time.x * 5) * 360));
 				color.rgb = lerp(saturate(_OutlineColor.rgb - pow(gradient * 0.5,2)),color.rgb,outline);

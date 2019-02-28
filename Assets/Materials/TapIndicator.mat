@@ -24,8 +24,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _CircleSize: 0.99
-    - _OutlineWidth: 0.062
+    - _CircleSize: 1
+    - _OutlineWidth: 0.018
     m_Colors:
     - _InnerColor: {r: 0, g: 0, b: 0, a: 0.5}
-    - _OutlineColor: {r: 0.015352436, g: 0.5512429, b: 0.6509434, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
