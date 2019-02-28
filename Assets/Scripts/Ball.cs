@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
 		defaultStartingPosition = transform.position;
 	}
 
-	private void TestMovement() {
+	public void TestMovement() {
 		Vector3 firstBouncePoint = GetFirstBouncePoint();
 		Vector3 secondBouncePoint = GetSecondBouncePoint();
 

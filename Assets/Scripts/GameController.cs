@@ -52,6 +52,8 @@ public class GameController : MonoBehaviour
 
 			Accuracy accuracy = ConfigDatabase.Instance.GetAccuracy(DetermineAccuracy(pixelPos));
 			HitTheBall(accuracy);
+			if(accuracy == Accuracy.Perfect || accuracy == Accuracy.Good)
+			ball.TestMovement();
 
 			currentTapCircleRadius = 0f;
 			RefreshTapIndicator(new IngamePanel.IndicatorDisplaySettings(currentTapCircleRadius,pixelPos,ConfigDatabase.Instance.playerIndicatorColor));
