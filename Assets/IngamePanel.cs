@@ -35,10 +35,10 @@ public class IngamePanel : MonoBehaviour
 	public void Awake() {
 		GameController.Instance.RefreshTapIndicator += RefreshTapIndicator;
 		GameController.Instance.RefreshTarget += RefreshTargetIndicator;
-		GameController.Instance.HitTheBall += PlayAccuracyParticle;
+		GameController.Instance.TriedToHitTheBall += PlayAccuracyParticle;
 		tapMat = tapIndicator.material = Instantiate(tapIndicator.material);
 		targetMat = targetTapIndicator.material = Instantiate(targetTapIndicator.material);
-		mainCanvasRectTransform = FindObjectOfType<Canvas>().GetComponent<RectTransform>();
+		mainCanvasRectTransform = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<RectTransform>();
 	}
 
 	private void RefreshTapIndicator(IndicatorDisplaySettings displaySettings) {
@@ -66,6 +66,7 @@ public class IngamePanel : MonoBehaviour
 	}
 
 	private void PlayAccuracyParticle(Accuracy accuracy) {
+		GetAccuracyParticle(accuracy).transform.position = targetTapIndicator.transform.position;
 		GetAccuracyParticle(accuracy).Play();
 	}
 }

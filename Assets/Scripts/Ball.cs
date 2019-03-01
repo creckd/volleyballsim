@@ -24,8 +24,7 @@ public class Ball : MonoBehaviour
 		}
 	}
 
-	public BouncePoint[] firstBouncePoints;
-	public BouncePoint[] secondBouncePoints;
+	public BallPath[] ballPaths;
 
 	public float ballRadius;
 
@@ -54,13 +53,16 @@ public class Ball : MonoBehaviour
 		defaultStartingPosition = transform.position;
 	}
 
-	public void TestMovement() {
-		Vector3 firstBouncePoint = GetFirstBouncePoint();
-		Vector3 secondBouncePoint = GetSecondBouncePoint();
+	public void TravelTo(BallPath path) {
+		TravelTo(path.arrivePosition.position, path.firstBounce.position, 20f);
+		TravelTo(path.firstBounce.position, path.secondBounce.position, 15f);
+		TravelTo(path.secondBounce.position, path.arrivePosition.position, 10f, ConfigDatabase.Instance.reboundCurve);
+	}
 
-		TravelTo(defaultStartingPosition ,firstBouncePoint, 20f);
-		TravelTo(firstBouncePoint, secondBouncePoint, 15f);
-		TravelTo(secondBouncePoint, defaultStartingPosition, 10f, ConfigDatabase.Instance.reboundCurve);
+	public void TravelTo(BallPath path, Vector3 manualArrivePosition) {
+		TravelTo(path.arrivePosition.position, path.firstBounce.position, 20f);
+		TravelTo(path.firstBounce.position, path.secondBounce.position, 15f);
+		TravelTo(path.secondBounce.position, manualArrivePosition, 10f, ConfigDatabase.Instance.reboundCurve);
 	}
 
 	public void TravelTo(Vector3 fromPosition, Vector3 toPosition, float speed, AnimationCurve pathCurve = null) {
@@ -107,12 +109,9 @@ public class Ball : MonoBehaviour
 			travelFinished(move);
 	}
 
-	private Vector3 GetFirstBouncePoint() {
-		return firstBouncePoints[0].markerTransform.position;
-	}
-
-	private Vector3 GetSecondBouncePoint() {
-		return secondBouncePoints[0].markerTransform.position;
+	public BallPath GetRandomBallPath() {
+		//return ballPaths[0];
+		return ballPaths[UnityEngine.Random.Range(0,ballPaths.Length)];
 	}
 
 }
