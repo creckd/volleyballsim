@@ -62,8 +62,9 @@
 				color.a = saturate(color.a);
 				float gradient = sin(radians(frac((i.uv.y * 4) + _Time.x * 5) * 360));
 				color.rgb = lerp(saturate(_OutlineColor.rgb - pow(gradient * 0.5,2)),color.rgb,outline);
-				color.a *= 1 - saturate(pow(_CircleSize,3));
-				color.a *= 1  - (pow(_CircleSize,3) * (outline));
+				color.a *= min(1.5 - saturate(pow(_CircleSize,2)),1);
+				color.a *= min(1.5  - saturate((pow(_CircleSize,2) * (outline))),1);
+				color.a = saturate(color.a);
                 return color;
             }
             ENDCG

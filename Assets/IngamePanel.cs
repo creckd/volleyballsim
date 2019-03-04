@@ -28,17 +28,30 @@ public class IngamePanel : MonoBehaviour
 	public Image targetTapIndicator;
 	public AccuracyParticle[] accuracyParticles;
 
+	public GameObject losePanel;
+	public Text levelHitNumberText;
+	public Text tutorialText;
+
 	private Material tapMat;
 	private Material targetMat;
 	private RectTransform mainCanvasRectTransform;
+
+	private int localHitNumber = 0;
 
 	public void Awake() {
 		GameController.Instance.RefreshTapIndicator += RefreshTapIndicator;
 		GameController.Instance.RefreshTarget += RefreshTargetIndicator;
 		GameController.Instance.TriedToHitTheBall += PlayAccuracyParticle;
+		GameController.Instance.RefreshHitNumber += (int hn) => { localHitNumber = hn; };
+		GameController.Instance.GameFinished += GameFinished;
+		GameController.Instance.GameStarted += GameStarted;
 		tapMat = tapIndicator.material = Instantiate(tapIndicator.material);
 		targetMat = targetTapIndicator.material = Instantiate(targetTapIndicator.material);
 		mainCanvasRectTransform = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<RectTransform>();
+	}
+
+	private void GameStarted() {
+		tutorialText.gameObject.SetActive(false);
 	}
 
 	private void RefreshTapIndicator(IndicatorDisplaySettings displaySettings) {
@@ -68,5 +81,16 @@ public class IngamePanel : MonoBehaviour
 	private void PlayAccuracyParticle(Accuracy accuracy) {
 		GetAccuracyParticle(accuracy).transform.position = targetTapIndicator.transform.position;
 		GetAccuracyParticle(accuracy).Play();
+	}
+
+	private void GameFinished() {
+		losePanel.gameObject.SetActive(true);
+		tapIndicator.gameObject.SetActive(false);
+		targetTapIndicator.gameObject.SetActive(false);
+		levelHitNumberText.text = localHitNumber.ToString();
+	}
+
+	public void RestartGame() {
+		UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
 	}
 }

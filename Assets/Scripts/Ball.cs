@@ -27,10 +27,11 @@ public class Ball : MonoBehaviour
 	public BallPath[] ballPaths;
 
 	public float ballRadius;
+	public bool currentlyRebounding = false;
+	public bool currentlyTravelling = false;
 
 	private Vector3 defaultStartingPosition = Vector3.zero;
 	private List<Move> moveList = new List<Move>();
-	private bool currentlyTravelling = false;
 
 	private Vector3 torqueVelocity = Vector3.zero;
 
@@ -77,8 +78,12 @@ public class Ball : MonoBehaviour
 	}
 
 	private void MoveFinished(Move move) {
+		if (move.curve != null) //gyors gameplay iteration hack
+			currentlyRebounding = false;
 		moveList.Remove(move);
 		if (moveList.Count > 0) {
+			if (moveList[0].curve != null)
+				currentlyRebounding = true;
 			CalculateTorque(move, moveList[0]);
 			StartCoroutine(Travel(moveList[0], MoveFinished));
 		}

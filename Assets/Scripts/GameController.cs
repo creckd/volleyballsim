@@ -15,11 +15,21 @@ public class GameController : MonoBehaviour
 		}
 	}
 
+	public enum GameState {
+		NotStarted,
+		Playing,
+		Finished
+	}
+
+	public GameState currentGameState = GameState.NotStarted;
+
 	public Action<IngamePanel.IndicatorDisplaySettings> RefreshTapIndicator = delegate { };
 	public Action<IngamePanel.IndicatorDisplaySettings> RefreshTarget = delegate { };
 
 	public Action<Accuracy> TriedToHitTheBall = delegate { };
 	public Action<int> RefreshHitNumber = delegate { };
+	public Action GameFinished = delegate { };
+	public Action GameStarted = delegate { };
 
 	private int currentFingerID = -1;
 	private float currentTapCircleRadius = 0f;
@@ -51,12 +61,18 @@ public class GameController : MonoBehaviour
 	}
 
 	private void ReleaseHappened(int fingerID, Vector3 pixelPos) {
-		if (currentFingerID == fingerID) {
+		if (currentFingerID == fingerID && currentGameState != GameState.Finished) {
 			currentFingerID = -1;
 
 			Accuracy accuracy = ConfigDatabase.Instance.GetAccuracy(DetermineAccuracy(pixelPos));
 			TriedToHitTheBall(accuracy);
 			if (accuracy == Accuracy.Perfect || accuracy == Accuracy.Good) {
+				if (currentTargetConfig.type == TargetTypes.Hard)
+					CameraShake.Instance.ShakeCamera(1f, 0.1f);
+				if (currentGameState == GameState.NotStarted) {
+					currentGameState = GameState.Playing;
+					GameStarted();
+				}
 				numberOfHits++;
 				BallPath nextPath = ball.GetRandomBallPath();
 				ball.TravelTo(currentPath, nextPath.arrivePosition.position);
@@ -71,7 +87,7 @@ public class GameController : MonoBehaviour
 	}
 
 	private void TapHappened(int fingerID, Vector3 pixelPos) {
-		if (currentFingerID == -1) {
+		if (currentFingerID == -1 && currentGameState != GameState.Finished) {
 			currentFingerID = fingerID;
 			currentTapCircleRadius = 1f;
 			RefreshTapIndicator(new IngamePanel.IndicatorDisplaySettings(currentTapCircleRadius, pixelPos, ConfigDatabase.Instance.playerIndicatorColor));
@@ -87,8 +103,25 @@ public class GameController : MonoBehaviour
 
 	private void Update() {
 		if (currentFingerID != -1) {
-			currentTapCircleRadius = Mathf.Clamp(currentTapCircleRadius - ConfigDatabase.Instance.indicatorShrinkingSpeed * Time.deltaTime, 0f, Mathf.Infinity);
+			if (currentGameState == GameState.Playing) {
+				if (ball.currentlyRebounding) {
+					float targetCircleSize = currentTargetConfig.circleSizeValue - 0.1f;
+					float normalizedDistance = Mathf.Clamp01(Vector3.Distance(ball.transform.position, currentTargetWorldPosition) / 6.5f);
+					currentTapCircleRadius = targetCircleSize + (normalizedDistance * (1f - targetCircleSize));
+				} else {
+					currentTapCircleRadius = 1f;
+				}
+			} else {
+				currentTapCircleRadius = Mathf.Clamp(currentTapCircleRadius - ConfigDatabase.Instance.indicatorShrinkingSpeed * Time.deltaTime, 0f, Mathf.Infinity);
+			}
+		} else {
+			currentTapCircleRadius = 0f;
+		}
 			RefreshTapIndicator(new IngamePanel.IndicatorDisplaySettings(currentTapCircleRadius, Input.mousePosition, ConfigDatabase.Instance.playerIndicatorColor));
+
+		if (!ball.currentlyTravelling && currentGameState == GameState.Playing && currentGameState != GameState.Finished) {
+			currentGameState = GameState.Finished;
+			GameFinished();
 		}
 	}
 }
