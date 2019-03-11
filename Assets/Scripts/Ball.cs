@@ -33,6 +33,8 @@ public class Ball : MonoBehaviour
 	private Vector3 defaultStartingPosition = Vector3.zero;
 	private List<Move> moveList = new List<Move>();
 
+	public float timeFinishedTravelling;
+
 	private Vector3 torqueVelocity = Vector3.zero;
 
 	private void Awake() {
@@ -55,9 +57,9 @@ public class Ball : MonoBehaviour
 	}
 
 	public void TravelTo(BallPath path) {
-		TravelTo(path.arrivePosition.position, path.firstBounce.position, 20f);
-		TravelTo(path.firstBounce.position, path.secondBounce.position, 15f);
-		TravelTo(path.secondBounce.position, path.arrivePosition.position, 10f, ConfigDatabase.Instance.reboundCurve);
+		TravelTo(path.arrivePosition.position, path.firstBounce.position, 15f);
+		TravelTo(path.firstBounce.position, path.secondBounce.position, 10f);
+		TravelTo(path.secondBounce.position, path.arrivePosition.position, 5f, ConfigDatabase.Instance.reboundCurve);
 	}
 
 	public void TravelTo(BallPath path, Vector3 manualArrivePosition) {
@@ -109,6 +111,7 @@ public class Ball : MonoBehaviour
 			yield return null;
 		}
 		transform.position = toPos;
+		timeFinishedTravelling = Time.realtimeSinceStartup;
 		currentlyTravelling = false;
 		if (travelFinished != null)
 			travelFinished(move);

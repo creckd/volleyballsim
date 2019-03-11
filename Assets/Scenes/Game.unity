@@ -461,7 +461,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  indicatorShrinkingSpeed: 1.75
+  indicatorShrinkingSpeed: 1
   targets:
   - type: 0
     circleSizeValue: 0.5
@@ -23112,6 +23112,7 @@ MonoBehaviour:
   ballRadius: 0.5
   currentlyRebounding: 0
   currentlyTravelling: 0
+  timeFinishedTravelling: 0
 --- !u!1 &1587942005
 GameObject:
   m_ObjectHideFlags: 0

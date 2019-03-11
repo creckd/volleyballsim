@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour
 	private void Update() {
 		if (currentFingerID != -1) {
 			if (currentGameState == GameState.Playing) {
-				if (ball.currentlyRebounding) {
+				if (ball.currentlyRebounding || (!ball.currentlyTravelling && (Time.realtimeSinceStartup - ball.timeFinishedTravelling < 0.25f))) {
 					float targetCircleSize = currentTargetConfig.circleSizeValue - 0.1f;
 					float normalizedDistance = Mathf.Clamp01(Vector3.Distance(ball.transform.position, currentTargetWorldPosition) / 6.5f);
 					currentTapCircleRadius = targetCircleSize + (normalizedDistance * (1f - targetCircleSize));
@@ -119,7 +119,7 @@ public class GameController : MonoBehaviour
 		}
 			RefreshTapIndicator(new IngamePanel.IndicatorDisplaySettings(currentTapCircleRadius, Input.mousePosition, ConfigDatabase.Instance.playerIndicatorColor));
 
-		if (!ball.currentlyTravelling && currentGameState == GameState.Playing && currentGameState != GameState.Finished) {
+		if (!ball.currentlyTravelling && currentGameState == GameState.Playing && currentGameState != GameState.Finished && (Time.realtimeSinceStartup - ball.timeFinishedTravelling) > 0.25f) {
 			currentGameState = GameState.Finished;
 			GameFinished();
 		}
